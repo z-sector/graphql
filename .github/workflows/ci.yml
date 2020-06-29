@@ -12,8 +12,8 @@ jobs:
         with:
           python-version: '3.7'
       - name: Install dependencies with pipenv
-          run: |
-            pip install pipenv
-            pipenv install --deploy --dev
+        run: |
+          pip install pipenv
+          pipenv install --deploy --dev
 
       - run: pipenv run lint
