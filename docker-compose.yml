@@ -1,0 +1,60 @@
+version: "3.7"
+
+volumes:
+  stripe_pgdata: {}
+
+x-db-hostname: &x_db_hostname app_db
+
+x-db-env-vars: &x_db_env_vars
+  POSTGRES_DB: app_db
+  POSTGRES_USER: graphql
+  POSTGRES_PASSWORD: 211e7f2a3e2574850de346b12f92e64f
+
+services:
+  app:
+    hostname: app
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      <<: *x_db_env_vars
+      POSTGRES_HOST: *x_db_hostname
+      POSTGRES_PORT: 5432
+      ADMIN_USERNAME: admin
+      ADMIN_INITIAL_PASSWORD: admin
+    ports:
+      - 8000:8000
+    command: "./bin/app_start.sh"
+    depends_on:
+      - app_db
+
+  app_db:
+    hostname: *x_db_hostname
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    volumes:
+      - stripe_pgdata:/var/lib/postgresql/data
+    environment:
+      <<: *x_db_env_vars
+    ports:
+      - 5434:5432
+    command: postgres -c log_statement=all -c log_min_messages=INFO -c log_min_duration_statement=0
+
+  nginx:
+    hostname: nginx
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    volumes:
+      - .:/app
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - 5080:3080
+    depends_on:
+      - app

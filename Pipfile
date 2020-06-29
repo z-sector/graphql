@@ -1,0 +1,44 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+django = "==3.0.7"
+psycopg2 = "==2.8.5"
+gunicorn = "==20.0.4"
+graphene-django = "==2.10.1"
+django-graphql-jwt = "==0.3.1"
+django-filter = "==2.3.0"
+mypy = "==0.782"
+safety = "==1.9.0"
+bandit = "==1.6.2"
+pycodestyle = "==2.6.0"
+flake8 = "*"
+pylint = "*"
+pylint-django = "==2.0.15"
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+fix_own = "./bin/fix_ownership.sh"
+docker_prune = "./bin/docker_prune.sh"
+app_logs = "./bin/app_logs.sh"
+app_shell = "./bin/app_shell.sh"
+makemigrations = "./bin/makemigrations.sh"
+migrate = "./bin/migrate.sh"
+resetmigrations = "./bin/resetmigrations.sh"
+create_user = "./bin/create_user.sh"
+collectstatic = "./bin/collectstatic.sh"
+lint = "./bin/app_lint.sh"
+cleanup = './bin/cleanup.sh'
+#====================================
+build = "./bin/build.sh"
+init = "./bin/init.sh"
+start = "./bin/start.sh"
+stop = "./bin/stop.sh"
+down = "./bin/down.sh"
+drop = "./bin/drop.sh"
