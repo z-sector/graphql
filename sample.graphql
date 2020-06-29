@@ -1,0 +1,105 @@
+query Example1($identity: UUID = "346c2b92-6265-4e23-a6c4-c4933a2301be",
+  $showCatMov: Boolean = true) {
+  actor(id: $identity) {
+    name
+  }
+  actors {
+    name
+  }
+  movie(id: "8c366e8f-2732-4290-9356-dd09f946aa4e") {
+    id
+    movieAge
+    category @include(if: $showCatMov){
+      name
+    }
+    actors {
+      name
+    }
+  }
+}
+
+mutation CreateActor {
+  createActor(name: "Test2"){
+    actor {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateActor {
+  updateActor(id: "5123bcdd-6398-40b8-b6a4-001a7e4f3358", name: "Test4") {
+    actor {
+      id
+      name
+    }
+  }
+}
+
+mutation CreateToken {
+  tokenAuth(username: "egor", password: "stas09052012") {
+    payload
+    refreshExpiresIn
+    token
+  }
+}
+
+mutation VerifyToken {
+  verifyToken(token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImVnb3IiLCJleHAiOjE1OTMyNzcxMzMsIm9yaWdJYXQiOjE1OTMyNzY4MzN9.oYte711W5NOSopam8ujfsYJBVhz0A57pjiS07zR73KA") {
+    payload
+  }
+}
+
+
+query AllCategory {
+  allCategories(name_Istartswith: "fant") {
+    edges {
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+
+query GetCategory {
+  category(id: "Q2F0ZWdvcnlOb2RlOjZmYjU0YTIxLTg1YTctNDk1MS05MTMwLTA1OWNlMGMyZjIwOQ==") {
+    id
+    name
+  }
+}
+
+mutation UpdateCategory {
+  updateCategory(input: {
+      id: "Q2F0ZWdvcnlOb2RlOjZmM2Y0M2E3LWNmNWQtNDhmZC1hNGQwLThjY2E5ZGFhNDMxNQ==",
+  }){
+    category {
+      id
+      name
+    }
+  }
+}
+
+query AllCategoryPagination {
+  allCategories(first: 3, after: "YXJyYXljb25uZWN0aW9uOjA=") {
+    totalCount
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+    edges {
+      cursor
+      node {
+        id
+        name
+      }
+    }
+  }
+}
+
+# VARIABLE
+#{
+#  "identity": "1d1725ba-877e-4a44-a0c2-c03c6be0b16f"
+#}
