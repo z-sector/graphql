@@ -3,15 +3,17 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v1
-      - name: Run a one-line script
-        run: echo Hello, world!
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+          with:
+            python-version: '3.7'
+      - name: Install dependencies with pipenv
+          run: |
+            pip install pipenv
+            pipenv install --deploy --dev
+
+      - run: pipenv run lint
